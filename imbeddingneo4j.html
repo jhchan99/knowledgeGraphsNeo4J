@@ -1,23 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document Title</title>
-    <!-- Add your CSS file link here -->
-    <link rel="stylesheet" href="styles.css">
-</head>
-<script>
-    function draw() {
-        var config = {
-
+    <title>Neovis.js Simple Example</title>
+    <style type="text/css">
+        html, body {
+            font: 16pt arial;
         }
-        var viz = new NeoV
+
+        #viz {
+            width: 900px;
+            height: 700px;
+            border: 1px solid lightgray;
+            font: 22pt arial;
+        }
+    </style>
+    <script src="https://unpkg.com/neovis.js@2.0.2"></script>
+</head>
+
+<script type="text/javascript">
+
+    let neoViz;
+
+    function draw() {
+        const config = {
+            containerId: "viz",
+            neo4j: {
+                serverUrl: "bolt://localhost:7687",
+                serverUser: "neo4j",
+                server_password: "sheds-stock-attitudes",
+            },
+            labels: {
+                Character: {
+                    label: "name",
+                    value: "pagerank",
+                    group: "community",
+                }
+            },
+            relationships: {
+                INTERACTS: {
+                    value: "weight"
+                }
+            },
+            initialCypher: "MATCH p = (:Character)-[:INTERACTS]->(:Character) RETURN p"
+        };
+
+        neoViz = new NeoVis.default(config);
+        neoViz.render();
     }
 </script>
+</script>
 <body onload="draw()">
-    <div> id= "viz" </div>
-    <!-- Add your JavaScript file link here -->
-    <script src="https://unpkg.com/neovis.js@2.0.2"></script>
+<div id="viz"></div>
 </body>
 </html>
